@@ -6,8 +6,10 @@ const video = player.querySelector('.viewer');
 const toggle = player.querySelector('.toggle');
 const skipButtons = player.querySelectorAll('[data-skip]');
 const ranges = player.querySelectorAll('.player__slider');
+const fullScreen = player.querySelector('.fullscreen');
 
 let isClicked = false;
+let isFullScreen = false;
 
 /* Build functions */
 
@@ -49,6 +51,16 @@ function scrub(e){
     video.currentTime = scrubTime;
 }
 
+function makeFullscreen(){
+    if(!isFullScreen){
+        player.webkitRequestFullScreen();
+        isFullScreen = true;
+    } else {
+        document.webkitExitFullscreen();
+        isFullScreen = false;
+    }    
+}
+
 /* Hook up the event listeners */
 video.addEventListener('click', togglePlay);
 video.addEventListener('play', updateButton);
@@ -58,6 +70,9 @@ video.addEventListener('timeupdate', handleProgress);
 toggle.addEventListener('click', togglePlay);
 
 skipButtons.forEach(button => button.addEventListener('click', skip));
+
+fullScreen.addEventListener('click', makeFullscreen);
+
 ranges.forEach(range => range.addEventListener('change', handleRangeUpdate));
 ranges.forEach(range => range.addEventListener('mouseup', toggleRangeUpdate));
 ranges.forEach(range => range.addEventListener('mousedown', toggleRangeUpdate));
